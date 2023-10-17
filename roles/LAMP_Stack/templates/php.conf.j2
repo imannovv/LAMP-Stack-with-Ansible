@@ -1,0 +1,21 @@
+ScriptAlias /cgi-bin/ "/var/www/cgi-bin/"
+AddHandler php56-fcgi .php
+Action php56-fcgi /cgi-bin/php56.fcgi
+Action php72-fcgi /cgi-bin/php72.fcgi
+Action php74-fcgi /cgi-bin/php74.fcgi
+ 
+<Directory /var/www/html/php56>
+DirectoryIndex info.php
+AllowOverride all
+Require all granted
+</Directory>
+<Directory /var/www/html/php72>
+DirectoryIndex info.php
+AllowOverride all
+Require all granted
+</Directory>
+<Directory /var/www/html/php74>
+DirectoryIndex info.php
+AllowOverride all
+Require all granted
+</Directory>

@@ -1,0 +1,149 @@
+---
+# tasks file for LEMP_Stack #
+
+- name: Install required packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop: "{{ packages }}"
+
+# Configure Mariadb #
+- name: Start mariadb service
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: Change mysql root password
+  community.mysql.mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    priv: '*.*:ALL'
+    state: present
+  notify: Restart Mariadb
+  tags: run_only_once
+
+- name: Removes all anonymous user accounts
+  community.mysql.mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Removes the MySQL test database
+  community.mysql.mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+# PHP #
+- name: Install remi-release-7.rpm 
+  ansible.builtin.yum:
+    name: "{{ remi_release }}"
+    state: latest
+
+- name: Enable remi-php73 repo
+  ansible.builtin.shell: yum-config-manager --enable remi-php73
+
+- name: Install PHP packages
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ php_packages }}"
+
+- name: Stop {{ php_services }} services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: yes
+  loop: "{{ php_services }}"
+
+- name: Change port of services, because all of them working in the same port
+  ansible.builtin.shell: sed -i 's/:9000/:9056/' /etc/opt/remi/php56/php-fpm.d/www.conf && sed -i 's/:9000/:9072/' /etc/opt/remi/php72/php-fpm.d/www.conf && sed -i 's/:9000/:9074/' /etc/opt/remi/php74/php-fpm.d/www.conf
+
+- name: Start {{ php_services }} services
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ php_services }}"
+
+# Making cgi script for executing each php version #
+- name: Copy using inline content
+  ansible.builtin.copy:
+    content: "{{ item.content }}"
+    dest: "{{ item.path }}"
+  loop: "{{ cgi }}"
+
+- name: Change file permissions
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: '0755'
+  loop: "{{ cgi }}"
+
+- name: Template a file to {{ php_conf }}
+  ansible.builtin.template:
+    src: ../templates/php.conf.j2
+    dest: "{{ php_conf }}"
+
+- name: Create a directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop: "{{ php_directories }}"
+
+- name: Template a file to {{ php_info_files }}
+  ansible.builtin.template:
+    src: ../templates/info.php.j2
+    dest: "{{ item }}"
+  loop: "{{ php_info_files }}"
+
+- name: AddHandler
+  ansible.builtin.copy:
+    content: 'AddHandler php74-fcgi .php'
+    dest: "{{ item }}"
+  loop: "{{ php_htaccess }}"
+
+- name: Start {{ php_services }} services, if not started
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ php_services }}"
+
+# Firewall Configuration #
+- name: Start service firewalld, if not started
+  ansible.builtin.service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: permit traffic in default zone for https service
+  ansible.posix.firewalld:
+    service: http
+    permanent: true
+    state: enabled
+    immediate: true
+
+- name: Permit traffic in default zone on port {{ php_service_ports }}
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+    immediate: true
+  loop: "{{ php_service_ports }}"
+
+- name: Put SELinux in permissive mode
+  ansible.posix.selinux:
+    policy: targeted
+    state: permissive
+
+- name: Start service httpd, if not started
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
+    enabled: yes
+...

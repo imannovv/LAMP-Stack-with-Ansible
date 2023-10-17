@@ -1,0 +1,6 @@
+---
+- name: LAMP Stack
+  hosts: managed_nodes
+  roles:
+    - /home/ali/ansible/roles/LAMP_Stack
+

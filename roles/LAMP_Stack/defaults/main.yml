@@ -1,0 +1,67 @@
+---
+# defaults file for LEMP_Stack
+
+app_user: "ali"
+http_host: "your_domain"
+http_port: 80
+http_conf: "your_domain.conf"
+mysql_root_password: "ali123"
+remi_release: "http://rpms.remirepo.net/enterprise/remi-release-7.rpm"
+
+packages:
+  - epel-release
+  - yum-utils
+  - httpd
+  - mariadb-server
+  - mariadb
+
+php_conf: /etc/httpd/conf.d/php.conf
+
+php_service_ports:
+  - 9056/tcp
+  - 9072/tcp
+  - 9074/tcp
+
+php_packages:
+  - php56
+  - php72
+  - php74
+  - php56-php-fpm
+  - php72-php-fpm
+  - php74-php-fpm
+  - php56-php-mysqlnd
+  - php72-php-mysqlnd
+  - php74-php-mysqlnd
+
+php_directories:
+  - /var/www/html/php56
+  - /var/www/html/php72
+  - /var/www/html/php74
+
+php_info_files:
+  - /var/www/html/php56/info.php
+  - /var/www/html/php72/info.php
+  - /var/www/html/php74/info.php
+
+php_htaccess:
+  - /var/www/html/php72/.htaccess
+  - /var/www/html/php74/.htaccess
+
+php_services:
+  - php56-php-fpm
+  - php72-php-fpm
+  - php74-php-fpm
+
+cgi:
+  - content: |
+       #!/bin/bash
+       exec /bin/php56-cgi
+    path: /var/www/cgi-bin/php56.fcgi
+  - content: |
+       #!/bin/bash
+       exec /bin/php72-cgi
+    path: /var/www/cgi-bin/php72.fcgi
+  - content: |
+       #!/bin/bash
+       exec /bin/php74-cgi
+    path: /var/www/cgi-bin/php74.fcgi

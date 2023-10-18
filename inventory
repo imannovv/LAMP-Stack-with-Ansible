@@ -1,4 +1,4 @@
 [managed_nodes]
 worker01 ansible_host=192.168.198.171
-worker02 ansible_host=192.168.198.17
+worker02 ansible_host=192.168.198.172
 

@@ -11,12 +11,12 @@ Minimum 2 Managed nodes(in my case CentOS7, you may see problems with other dist
 Dependencies
 ------------
 
-Dependencies will downloaded in "collections" section.
+Dependencies will downloaded and ready in "collections" section.
 
 Example Playbook
 ----------------
 
-Run lamp.yml file to start the Setup of the LAMP Stack
+After changing ansible.cfg and inventory files, Run lamp.yml file to start the Setup of the LAMP Stack
 
     ansible-playbook lamp.yml
 

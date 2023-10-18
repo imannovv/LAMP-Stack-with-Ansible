@@ -1,6 +1,8 @@
 Setup LAMP with multiple PHP versions in Ansible
 =========
 
+![Image](images/ansible.png)
+
 Setting up LAMP(Linux, Apache, MariaDB, PHP) with 5.6, 7.2, 7.4 versions of PHP in Ansible
 
 Requirements

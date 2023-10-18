@@ -2,5 +2,5 @@
 - name: LAMP Stack
   hosts: managed_nodes
   roles:
-    - $HOME/LAMP-Stack-with-Ansible/roles/LAMP_Stac
+    - $HOME/LAMP-Stack-with-Ansible/roles/LAMP_Stack
 

@@ -8,6 +8,13 @@
     update_cache: yes
   loop: "{{ packages }}"
 
+- name: Install required packages for LAMP
+  ansible.builtin.yum:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  loop: "{{ lamp_packages }}"
+
 # Configure Mariadb #
 - name: Start mariadb service
   ansible.builtin.service:

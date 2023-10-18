@@ -9,6 +9,18 @@ mysql_root_password: "ali123"
 remi_release: "http://rpms.remirepo.net/enterprise/remi-release-7.rpm"
 
 packages:
+  - python
+  - python3
+  - python-pip
+  - python3-pip
+  - python2-PyMySQL
+  - python3-PyMySQL
+  - MySQL-python
+  - mysql-devel
+  - gcc
+  - python-devel
+
+lamp_packages:
   - epel-release
   - yum-utils
   - httpd

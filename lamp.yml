@@ -1,6 +1,7 @@
 ---
 - name: LAMP Stack
   hosts: managed_nodes
+  become: true
   roles:
     - $HOME/lamp-stack-centos-ansible/roles/LAMP_Stack
 

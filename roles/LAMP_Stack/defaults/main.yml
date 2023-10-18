@@ -56,8 +56,10 @@ php_info_files:
   - /var/www/html/php74/info.php
 
 php_htaccess:
-  - /var/www/html/php72/.htaccess
-  - /var/www/html/php74/.htaccess
+  - path: /var/www/html/php72/.htaccess
+    content: "AddHandler php72-fcgi .php"
+  - path: /var/www/html/php74/.htaccess
+    content: "AddHandler php74-fcgi .php"
 
 php_services:
   - php56-php-fpm

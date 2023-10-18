@@ -2,14 +2,14 @@
 # tasks file for LEMP_Stack #
 
 - name: Install required packages
-  ansible.builtin.yum:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: latest
     update_cache: yes
   loop: "{{ packages }}"
 
 - name: Install required packages for LAMP
-  ansible.builtin.yum:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: latest
     update_cache: yes
@@ -48,7 +48,7 @@
 
 # PHP #
 - name: Install remi-release-7.rpm 
-  ansible.builtin.yum:
+  ansible.builtin.package:
     name: "{{ remi_release }}"
     state: latest
 
@@ -56,7 +56,7 @@
   ansible.builtin.shell: yum-config-manager --enable remi-php73
 
 - name: Install PHP packages
-  ansible.builtin.yum:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: latest
   loop: "{{ php_packages }}"
@@ -110,8 +110,8 @@
 
 - name: AddHandler
   ansible.builtin.copy:
-    content: 'AddHandler php74-fcgi .php'
-    dest: "{{ item }}"
+    content: "{{ item.content }}"
+    dest: "{{ item.path }}"
   loop: "{{ php_htaccess }}"
 
 - name: Start {{ php_services }} services, if not started
@@ -121,7 +121,7 @@
     enabled: yes
   loop: "{{ php_services }}"
 
-# Firewall Configuration #
+# Firewall and SELinux configuration #
 - name: Start service firewalld, if not started
   ansible.builtin.service:
     name: firewalld

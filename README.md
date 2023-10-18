@@ -18,11 +18,11 @@ Example Playbook
 
 Run lamp.yml file to start the Setup of the LAMP Stack
 
-	ansible-playbook lamp.yml
+    ansible-playbook lamp.yml
 
 But, If you run the playbook twice or more, run this command
 
-        ansible-playbook lamp.yml --skip-tags run_only_once
+    ansible-playbook lamp.yml --skip-tags run_only_once
     
 Images from Project
 -------

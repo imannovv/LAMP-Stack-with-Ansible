@@ -28,7 +28,9 @@ Images from Project
 -------
 
 ![Image](images/php-56.png)
+---
 ![Image](images/php-72.png)
+---
 ![Image](images/php-74.png)
 
 License
@@ -39,4 +41,4 @@ Apache License
 Author Information
 ------------------
 
-linkedin: https://www.linkedin.com/in/imannovv/
+[LinkedIn](https://www.linkedin.com/in/imannovv/)

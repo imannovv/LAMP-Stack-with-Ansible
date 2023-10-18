@@ -1,38 +1,39 @@
-Role Name
+Setup LAMP with multiple PHP versions in Ansible
 =========
 
-A brief description of the role goes here.
+Setting up LAMP(Linux, Apache, MariaDB, PHP) with 5.6, 7.2, 7.4 versions of PHP in Ansible
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
-Role Variables
---------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Minimum 2 Managed nodes(in my case CentOS7, you may see problems with other distros) and 1 Control node 
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Dependencies will downloaded in "collections" section.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Run lamp.yml file to start the Setup of the LAMP Stack
 
-    - hosts: servers
+    - name: LAMP Stack
+      hosts: managed_nodes
       roles:
-         - { role: username.rolename, x: 42 }
+         - $HOME/LAMP-Stack-with-Ansible/roles/LAMP_Stack
+
+Images from Project
+-------
+
+
 
 License
 -------
 
-BSD
+Apache License
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+linkedin: https://www.linkedin.com/in/imannovv/
